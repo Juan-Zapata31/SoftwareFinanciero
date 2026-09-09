@@ -1,0 +1,131 @@
+/* ============================================
+   Variables globales — paleta tomada de los
+   mockups originales de JSC: Software Financiero
+   ============================================ */
+
+:root {
+  --teal-950: #0d3d43;
+  --teal-900: #12626c;
+  --teal-800: #17707c;
+  --teal-700: #1c6e78;
+  --cyan-500: #3ecbd9;
+  --cyan-300: #7fe0e8;
+  --bg-light: #eef3f4;
+  --white: #ffffff;
+  --ink: #123138;
+  --ink-soft: #3d5c62;
+
+  --font-display: "Anton", "Barlow", sans-serif;
+  --font-body: "Barlow", "Segoe UI", sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --container: 1160px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg-light);
+  line-height: 1.55;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin: 0;
+  color: var(--teal-800);
+}
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+button {
+  font-family: var(--font-display);
+}
+
+.section-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cyan-300);
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.eyebrow-dark {
+  color: var(--teal-700);
+}
+
+.section-title {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  margin-bottom: 2.5rem;
+  max-width: 720px;
+}
+
+.section-title-light {
+  color: var(--white);
+}
+
+.btn {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.8rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--teal-700);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--teal-950);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(18, 61, 67, 0.25);
+}
+
+.btn-secondary {
+  background: var(--cyan-300);
+  color: var(--teal-950);
+}
+
+.btn-secondary:hover {
+  background: var(--cyan-500);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(62, 203, 217, 0.35);
+}
+
+@media (max-width: 860px) {
+  .section-inner {
+    padding: 3.5rem 1.5rem;
+  }
+}

@@ -1,0 +1,5 @@
+/* Estilos generales de layout que no pertenecen a un componente específico */
+
+#root {
+  min-height: 100vh;
+}

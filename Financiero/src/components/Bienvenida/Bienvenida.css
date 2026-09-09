@@ -1,0 +1,67 @@
+.bienvenida {
+  padding: 3.5rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.bienvenida-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 2.2rem 2rem;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(18, 61, 67, 0.12);
+  text-align: center;
+}
+
+.bienvenida-card h2 {
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+}
+
+.form-bienvenida label {
+  display: block;
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.form-row input {
+  flex: 1 1 220px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #cfe0e2;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--bg-light);
+  color: var(--ink);
+}
+
+.form-row input:focus {
+  outline: 2px solid var(--cyan-500);
+  outline-offset: 1px;
+}
+
+.error-msg {
+  color: #c23b3b;
+  font-size: 0.85rem;
+  min-height: 1.2rem;
+  margin: 0.6rem 0 0;
+  text-align: left;
+}
+
+.mensaje-dinamico {
+  margin-top: 1.2rem;
+  font-weight: 600;
+  color: var(--teal-800);
+  font-size: 1.05rem;
+  min-height: 1.2rem;
+}
