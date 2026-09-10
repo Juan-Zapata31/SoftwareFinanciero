@@ -1,9 +1,9 @@
-import Header from './components/Header/Header.jsx'
-import Hero from './components/Hero/Hero.jsx'
-import Bienvenida from './components/Bienvenida/Bienvenida.jsx'
-import Problema from './components/Problema/Problema.jsx'
-import Funcionalidades from './components/Funcionalidades/Funcionalidades.jsx'
-import Footer from './components/Footer/Footer.jsx'
+import Header from './components/Header.jsx'
+import Hero from './components/Hero.jsx'
+import Bienvenida from './components/Bienvenida.jsx'
+import Problema from './components/Problema.jsx'
+import Funcionalidades from './components/Funcionalidades.jsx'
+import Footer from './components/Footer.jsx'
 import './App.css'
 
 function App() {
