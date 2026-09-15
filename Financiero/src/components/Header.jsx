@@ -7,7 +7,7 @@ function Header() {
 
   const enlaces = [
     { to: '/', texto: 'Inicio' },
-    { to: '/proyecto', texto: 'Sobre el proyecto' },
+    { to: '/proyecto', texto: 'Sobre nosotros' },
     { to: '/funcionalidades', texto: 'Funcionalidades' },
     { to: '/contacto', texto: 'Contacto' },
   ]

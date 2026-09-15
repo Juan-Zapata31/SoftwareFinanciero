@@ -1,40 +1,73 @@
+import { useState } from 'react'
 import './Problema.css'
 
-const puntos = [
-  { numero: 1, texto: 'Información financiera dispersa y difícil de consultar' },
-  { numero: 2, texto: 'Poca visibilidad del riesgo legal y financiero' },
-  { numero: 3, texto: 'Informes que toman tiempo generar manualmente' },
+const cargosInventados = [
+  'Gerente Financiero',
+  'Analista de Riesgos',
+  'Contador Senior',
+  'Coordinador de Tesorería',
+  'Auditor Interno',
+  'Especialista en Inversiones',
+  'Analista de Cartera',
+  'Jefe de Contabilidad',
+  'Asesor Financiero',
+  'Controller Financiero',
 ]
 
 function Problema() {
+  const [empleados, setEmpleados] = useState([])
+  const [cargando, setCargando] = useState(false)
+  const [error, setError] = useState('')
+
+  const obtenerEmpleados = async () => {
+    setCargando(true)
+    setError('')
+
+    try {
+      const respuesta = await fetch('https://jsonplaceholder.typicode.com/users')
+      if (!respuesta.ok) {
+        throw new Error('No se pudo obtener la lista de empleados.')
+      }
+      const datos = await respuesta.json()
+      setEmpleados(datos)
+    } catch {
+      setError('Ocurrió un error al obtener los nombres de empleados.')
+      setEmpleados([])
+    } finally {
+      setCargando(false)
+    }
+  }
+
   return (
     <section className="problema" id="proyecto">
       <div className="section-inner">
-        <p className="eyebrow eyebrow-dark">Sobre el proyecto</p>
-        <h2 className="section-title">¿Qué problema resolvemos?</h2>
-        <div className="problema-grid">
-          <div className="problema-texto">
-            <p>
-              Muchas pequeñas y medianas empresas administran su dinero de forma dispersa:
-              en cuadernos, hojas de cálculo sueltas o de memoria. Esto dificulta saber con
-              certeza cuánto se tiene, cuánto se debe y cuánto deben, y aumenta el riesgo de
-              errores y de incumplimientos legales como el SARLAFT.
-            </p>
-            <p>
-              <strong>Software Financiero</strong> está dirigido a administradores y
-              equipos financieros de empresas que necesitan centralizar el control de su
-              dinero, evaluar riesgos y generar informes confiables sin depender de procesos
-              manuales dispersos.
-            </p>
-          </div>
-          <div className="problema-cards">
-            {puntos.map((punto) => (
-              <div className="mini-card" key={punto.numero}>
-                <span className="mini-card-num">{punto.numero}</span>
-                <p>{punto.texto}</p>
-              </div>
-            ))}
-          </div>
+        <p className="eyebrow eyebrow-dark">Sobre nosotros</p>
+        <h2 className="section-title">Conoce a nuestro equipo</h2>
+
+        <div className="empleados-bloque">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={obtenerEmpleados}
+            disabled={cargando}
+          >
+            {cargando ? 'Cargando...' : 'Obtener nombres de empleados'}
+          </button>
+
+          {error && <p className="empleados-error">{error}</p>}
+
+          {empleados.length > 0 && (
+            <ul className="empleados-lista">
+              {empleados.map((empleado, indice) => (
+                <li key={empleado.id}>
+                  <span className="empleado-nombre">{empleado.name}</span>
+                  <span className="empleado-cargo">
+                    {cargosInventados[indice % cargosInventados.length]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>

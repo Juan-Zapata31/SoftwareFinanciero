@@ -1,61 +1,56 @@
 .problema {
   background: var(--bg-light);
 }
-
-.problema-grid {
+ 
+.empleados-bloque {
+  margin-top: 1rem;
+}
+ 
+.empleados-error {
+  color: #c23b3b;
+  font-size: 0.85rem;
+  margin: 0.8rem 0 0;
+}
+ 
+.empleados-lista {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 3rem;
-  align-items: start;
-}
-
-.problema-texto p {
-  color: var(--ink-soft);
-  font-size: 1.02rem;
-}
-
-.problema-texto strong {
-  color: var(--teal-800);
-}
-
-.problema-cards {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
-
-.mini-card {
+ 
+.empleados-lista li {
   background: var(--white);
   border-left: 4px solid var(--cyan-500);
   border-radius: var(--radius-sm);
-  padding: 1.1rem 1.3rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  padding: 0.9rem 1.1rem;
   box-shadow: 0 4px 14px rgba(18, 61, 67, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
-
-.mini-card p {
-  margin: 0;
+ 
+.empleado-nombre {
+  font-weight: 600;
   color: var(--ink);
   font-size: 0.95rem;
 }
-
-.mini-card-num {
-  font-family: var(--font-display);
-  color: var(--white);
-  background: var(--teal-700);
-  min-width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+ 
+.empleado-cargo {
+  color: var(--teal-700);
+  font-size: 0.85rem;
 }
-
+ 
 @media (max-width: 860px) {
-  .problema-grid {
+  .empleados-lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+ 
+@media (max-width: 500px) {
+  .empleados-lista {
     grid-template-columns: 1fr;
   }
 }
