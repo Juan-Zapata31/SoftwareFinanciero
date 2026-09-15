@@ -4,7 +4,7 @@ function Footer() {
   const anioActual = new Date().getFullYear()
 
   return (
-    <footer className="site-footer" id="contacto">
+    <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
           <span className="brand-name">SOFTWARE FINANCIERO</span>

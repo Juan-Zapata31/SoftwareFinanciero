@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import './Header.css'
 
 function Header() {
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   const enlaces = [
-    { href: '#inicio', texto: 'Inicio' },
-    { href: '#proyecto', texto: 'Sobre el proyecto' },
-    { href: '#funcionalidades', texto: 'Funcionalidades' },
-    { href: '#contacto', texto: 'Contacto' },
+    { to: '/', texto: 'Inicio' },
+    { to: '/proyecto', texto: 'Sobre el proyecto' },
+    { to: '/funcionalidades', texto: 'Funcionalidades' },
+    { to: '/contacto', texto: 'Contacto' },
   ]
 
   return (
@@ -39,9 +40,15 @@ function Header() {
 
         <nav className={`main-nav ${menuAbierto ? 'open' : ''}`}>
           {enlaces.map((enlace) => (
-            <a key={enlace.href} href={enlace.href} onClick={() => setMenuAbierto(false)}>
+            <NavLink
+              key={enlace.to}
+              to={enlace.to}
+              end={enlace.to === '/'}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+              onClick={() => setMenuAbierto(false)}
+            >
               {enlace.texto}
-            </a>
+            </NavLink>
           ))}
         </nav>
       </div>

@@ -1,19 +1,22 @@
+import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header.jsx'
-import Hero from './components/Hero.jsx'
-import Bienvenida from './components/Bienvenida.jsx'
-import Problema from './components/Problema.jsx'
-import Funcionalidades from './components/Funcionalidades.jsx'
 import Footer from './components/Footer.jsx'
+import Inicio from './pages/Inicio.jsx'
+import Proyecto from './pages/Proyecto.jsx'
+import FuncionalidadesPage from './pages/FuncionalidadesPage.jsx'
+import Contacto from './pages/Contacto.jsx'
 import './App.css'
 
 function App() {
   return (
     <>
       <Header />
-      <Hero />
-      <Bienvenida />
-      <Problema />
-      <Funcionalidades />
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/proyecto" element={<Proyecto />} />
+        <Route path="/funcionalidades" element={<FuncionalidadesPage />} />
+        <Route path="/contacto" element={<Contacto />} />
+      </Routes>
       <Footer />
     </>
   )

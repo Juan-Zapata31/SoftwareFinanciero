@@ -1,13 +1,16 @@
+import { useNavigate } from 'react-router-dom'
 import './Hero.css'
 
 function Hero() {
+  const navigate = useNavigate()
+
   const irABienvenida = () => {
     document.getElementById('bienvenida')?.scrollIntoView({ behavior: 'smooth' })
     document.getElementById('nombreUsuario')?.focus()
   }
 
   const irAProyecto = () => {
-    document.getElementById('proyecto')?.scrollIntoView({ behavior: 'smooth' })
+    navigate('/proyecto')
   }
 
   return (

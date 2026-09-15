@@ -55,6 +55,11 @@
   border-bottom-color: var(--cyan-300);
 }
 
+.main-nav a.active {
+  color: var(--cyan-300);
+  border-bottom-color: var(--cyan-300);
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;

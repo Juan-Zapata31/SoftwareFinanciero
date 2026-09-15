@@ -1,0 +1,28 @@
+.contacto {
+  background: var(--bg-light);
+}
+
+.contacto-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 720px;
+}
+
+.contacto-col h4 {
+  color: var(--teal-700);
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+}
+
+.contacto-col p {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem;
+}
+
+@media (max-width: 640px) {
+  .contacto-grid {
+    grid-template-columns: 1fr;
+  }
+}
