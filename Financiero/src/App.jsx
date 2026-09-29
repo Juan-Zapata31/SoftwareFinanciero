@@ -5,6 +5,7 @@ import Inicio from './pages/Inicio.jsx'
 import Proyecto from './pages/Proyecto.jsx'
 import FuncionalidadesPage from './pages/FuncionalidadesPage.jsx'
 import Contacto from './pages/Contacto.jsx'
+import TestBackend from './pages/TestBackend.jsx' // <--- 1. Importas tu página de prueba
 import './App.css'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/proyecto" element={<Proyecto />} />
         <Route path="/funcionalidades" element={<FuncionalidadesPage />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/api-test" element={<TestBackend />} /> {/* <--- 2. Añades la ruta */}
       </Routes>
       <Footer />
     </>
