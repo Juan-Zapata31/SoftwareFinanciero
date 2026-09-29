@@ -10,6 +10,7 @@ function Header() {
     { to: '/proyecto', texto: 'Sobre nosotros' },
     { to: '/funcionalidades', texto: 'Funcionalidades' },
     { to: '/contacto', texto: 'Contacto' },
+    { to: '/api-test', texto: 'Api' }
   ]
 
   return (
