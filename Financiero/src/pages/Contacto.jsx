@@ -3,6 +3,7 @@ import './Contacto.css'
 
 function validarNombre(valor, etiqueta) {
   const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
+
   if (valor.trim().length === 0) {
     return `Por favor escribe tu ${etiqueta}.`
   }
@@ -15,13 +16,28 @@ function validarNombre(valor, etiqueta) {
   return ''
 }
 
-function validarEmail(valor) {
+function validarApellido(valor, etiqueta) {
+  const apellidoValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
+
+  if (valor.trim().length === 0) {
+    return `Por favor escribe tu ${etiqueta}.`
+  }
+  if (valor.trim().length < 2) {
+    return `El ${etiqueta} debe tener al menos 2 caracteres.`
+  }
+  if (!apellidoValido.test(valor.trim())) {
+    return `El ${etiqueta} solo puede contener letras y espacios.`
+  }
+  return ''
+}
+
+function validarEmail(valor, etiqueta) {
   const formatoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (valor.trim().length === 0) {
-    return 'Por favor escribe tu email.'
+    return `Por favor escribe tu ${etiqueta}.`
   }
   if (!formatoValido.test(valor.trim())) {
-    return 'Escribe un email válido (ej: nombre@correo.com).'
+    return `Escribe un ${etiqueta} válido (ej: nombre@correo.com).`
   }
   return ''
 }
@@ -49,8 +65,8 @@ function Contacto() {
 
     const nuevosErrores = {
       nombre: validarNombre(nombre, 'nombre'),
-      apellido: validarNombre(apellido, 'apellido'),
-      email: validarEmail(email),
+      apellido: validarApellido(apellido, 'apellido'),
+      email: validarEmail(email, 'email'),
     }
 
     setErrores(nuevosErrores)
