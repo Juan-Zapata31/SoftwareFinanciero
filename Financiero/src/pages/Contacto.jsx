@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Contacto.css'
 
 function validarNombre(valor, etiqueta) {
@@ -48,6 +48,9 @@ function Contacto() {
   const [email, setEmail] = useState('')
   const [errores, setErrores] = useState({})
   const [enviado, setEnviado] = useState(false)
+  const temporizadorRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(temporizadorRef.current), [])
 
   const manejarCambio = (campo, valor) => {
     if (campo === 'nombre') setNombre(valor)
@@ -62,6 +65,7 @@ function Contacto() {
 
   const manejarEnvio = (evento) => {
     evento.preventDefault()
+    clearTimeout(temporizadorRef.current)
 
     const nuevosErrores = {
       nombre: validarNombre(nombre, 'nombre'),
@@ -74,10 +78,14 @@ function Contacto() {
     const hayErrores = Object.values(nuevosErrores).some((mensaje) => mensaje !== '')
     if (hayErrores) {
       setEnviado(false)
-      return
+    } else {
+      setEnviado(true)
     }
 
-    setEnviado(true)
+    temporizadorRef.current = setTimeout(() => {
+      setErrores({})
+      setEnviado(false)
+    }, 5000)
   }
 
   return (

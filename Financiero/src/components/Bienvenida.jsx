@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Bienvenida.css'
 
 function validarNombre(valor) {
@@ -23,6 +23,9 @@ function Bienvenida() {
   const [nombre, setNombre] = useState('')
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
+  const temporizadorRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(temporizadorRef.current), [])
 
   const manejarCambio = (evento) => {
     setNombre(evento.target.value)
@@ -31,16 +34,21 @@ function Bienvenida() {
 
   const manejarEnvio = (evento) => {
     evento.preventDefault()
+    clearTimeout(temporizadorRef.current)
     const errorEncontrado = validarNombre(nombre)
 
     if (errorEncontrado) {
       setError(errorEncontrado)
       setMensaje('')
-      return
+    } else {
+      setError('')
+      setMensaje(generarMensajeBienvenida(nombre.trim()))
     }
 
-    setError('')
-    setMensaje(generarMensajeBienvenida(nombre.trim()))
+    temporizadorRef.current = setTimeout(() => {
+      setError('')
+      setMensaje('')
+    }, 5000)
   }
 
   return (

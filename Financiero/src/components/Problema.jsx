@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Problema.css'
 
 const cargosInventados = [
@@ -18,8 +18,12 @@ function Problema() {
   const [empleados, setEmpleados] = useState([])
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState('')
+  const temporizadorRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(temporizadorRef.current), [])
 
   const obtenerEmpleados = async () => {
+    clearTimeout(temporizadorRef.current)
     setCargando(true)
     setError('')
 
@@ -35,6 +39,10 @@ function Problema() {
       setEmpleados([])
     } finally {
       setCargando(false)
+      temporizadorRef.current = setTimeout(() => {
+        setEmpleados([])
+        setError('')
+      }, 5000)
     }
   }
 
