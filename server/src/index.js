@@ -10,6 +10,37 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.post('/api/users', async (req, res) => {
+  const { name, lastName, email } = req.body ?? {};
+
+  if (
+    typeof name !== 'string' ||
+    typeof lastName !== 'string' ||
+    typeof email !== 'string' ||
+    !name.trim() ||
+    !lastName.trim() ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ||
+    name.trim().length > 50 ||
+    lastName.trim().length > 50 ||
+    email.trim().length > 100
+  ) {
+    return res.status(400).json({
+      message: 'Ingresa nombre, apellido y un correo válido dentro de los límites permitidos.',
+    });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO users (name, "lastName", email) VALUES ($1, $2, $3) RETURNING id, name, "lastName", email',
+      [name.trim(), lastName.trim(), email.trim()]
+    );
+    res.status(201).json({ message: 'Usuario guardado correctamente', user: rows[0] });
+  } catch (error) {
+    console.error('Error al guardar el usuario en PostgreSQL:', error);
+    res.status(500).json({ message: 'No fue posible guardar los datos en la base de datos.' });
+  }
+});
+
 // Ruta de prueba (Healthcheck)
 app.get('/api/health', (req, res) => {
   res.json({ message: 'Conexión exitosa con el backend en Express' });

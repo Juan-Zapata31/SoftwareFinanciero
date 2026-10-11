@@ -19,6 +19,11 @@
   font-size: 1.5rem;
 }
 
+.form-bienvenida-field {
+  margin-bottom: 0.9rem;
+  text-align: left;
+}
+
 .form-bienvenida label {
   display: block;
   text-align: left;
@@ -28,14 +33,8 @@
   font-size: 0.9rem;
 }
 
-.form-row {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.form-row input {
-  flex: 1 1 220px;
+.form-bienvenida input {
+  width: 100%;
   padding: 0.8rem 1rem;
   border: 1px solid #cfe0e2;
   border-radius: var(--radius-sm);
@@ -48,6 +47,10 @@
 .form-row input:focus {
   outline: 2px solid var(--cyan-500);
   outline-offset: 1px;
+}
+
+.form-bienvenida .btn {
+  margin-top: 0.3rem;
 }
 
 .error-msg {
