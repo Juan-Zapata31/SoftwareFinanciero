@@ -68,12 +68,13 @@ function Bienvenida() {
     }
 
     setGuardando(true)
+    const nombreGuardado = nombre.trim()
     try {
       const respuesta = await fetch(`${API_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: nombre.trim(),
+          name: nombreGuardado,
           lastName: apellido.trim(),
           email: email.trim(),
         }),
@@ -84,7 +85,10 @@ function Bienvenida() {
         throw new Error(datos.message || 'No fue posible guardar tus datos.')
       }
 
-      setMensaje(generarMensajeBienvenida(nombre.trim()))
+      setNombre('')
+      setApellido('')
+      setEmail('')
+      setMensaje(generarMensajeBienvenida(nombreGuardado))
       temporizadorRef.current = setTimeout(() => setMensaje(''), 5000)
     } catch (errorSolicitud) {
       mostrarError(errorSolicitud.message || 'No fue posible conectar con el servidor.')
