@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 function TestBackend() {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const temporizadorRef = useRef(null);
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => () => clearTimeout(temporizadorRef.current), []);
@@ -24,18 +26,14 @@ function TestBackend() {
         throw new Error('Falta configurar VITE_API_URL en el archivo .env del frontend.');
       }
 
-      const response = await fetch(`${API_URL}/health/db`);
-      const data = await response.json();
+      const respuesta = await axios.get(`${API_URL.replace(/\/+$/, '')}/health/db`);
 
-      if (!response.ok) {
-        throw new Error(data.message || 'No fue posible conectar con PostgreSQL.');
-      }
-
-      mostrarStatus({ type: 'success', ...data });
+      mostrarStatus({ type: 'success', ...respuesta.data });
     } catch (error) {
       mostrarStatus({
         type: 'error',
-        message: error.message || 'No fue posible conectar con el backend.',
+        message:
+          error.response?.data?.message || 'No fue posible conectar con el backend.',
       });
     } finally {
       setLoading(false);

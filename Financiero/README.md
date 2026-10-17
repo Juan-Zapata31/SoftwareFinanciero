@@ -1,35 +1,17 @@
-# JSC: Software Financiero — Versión React
+# JSC: Software Financiero — Frontend React
 
-Landing page del proyecto PPI, migrada a React con Vite, organizada por componentes.
-Cada componente vive en su propia carpeta con su `.jsx` y su `.css`.
+Frontend del proyecto PPI, desarrollado con React y Vite. Las solicitudes a la API se realizan con Axios.
 
 ## Estructura
 
 ```
 src/
-├── components/
-│   ├── Header/
-│   │   ├── Header.jsx
-│   │   └── Header.css
-│   ├── Hero/
-│   │   ├── Hero.jsx
-│   │   └── Hero.css
-│   ├── Bienvenida/
-│   │   ├── Bienvenida.jsx
-│   │   └── Bienvenida.css
-│   ├── Problema/
-│   │   ├── Problema.jsx
-│   │   └── Problema.css
-│   ├── Funcionalidades/
-│   │   ├── Funcionalidades.jsx
-│   │   └── Funcionalidades.css
-│   └── Footer/
-│       ├── Footer.jsx
-│       └── Footer.css
+├── components/    # Componentes reutilizables y sus estilos
+├── pages/         # Páginas de la aplicación
 ├── App.jsx
 ├── App.css
 ├── main.jsx
-└── index.css   (variables de color y estilos globales)
+└── index.css
 ```
 
 ## Cómo correrlo
@@ -38,6 +20,8 @@ src/
 npm install
 npm run dev
 ```
+
+Configura `VITE_API_URL` en `Financiero/.env` (por ejemplo, `http://localhost:3000/api`) antes de iniciar el frontend. En un equipo nuevo, puedes crear el archivo copiando `.env.example`. Para iniciar PostgreSQL y el backend, sigue las instrucciones del [README principal](../README.md).
 
 Luego abre la URL que muestra la terminal (por defecto `http://localhost:5173`).
 

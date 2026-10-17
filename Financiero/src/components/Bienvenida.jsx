@@ -1,23 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 import './Bienvenida.css'
-
-function validarNombre(valor, campo = 'nombre') {
-  const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
-  if (valor.trim().length === 0) {
-    return `Por favor escribe tu ${campo}.`
-  }
-  if (valor.trim().length < 2) {
-    return `El ${campo} debe tener al menos 2 caracteres.`
-  }
-  if (!soloLetras.test(valor.trim())) {
-    return `El ${campo} solo puede contener letras.`
-  }
-  return ''
-}
-
-function generarMensajeBienvenida(nombre) {
-  return `Bienvenido, ${nombre}. Gracias por visitar nuestro sistema.`
-}
 
 function Bienvenida() {
   const [nombre, setNombre] = useState('')
@@ -27,9 +10,12 @@ function Bienvenida() {
   const [mensaje, setMensaje] = useState('')
   const [guardando, setGuardando] = useState(false)
   const temporizadorRef = useRef(null)
+
   const API_URL = import.meta.env.VITE_API_URL
 
-  useEffect(() => () => clearTimeout(temporizadorRef.current), [])
+  useEffect(() => {
+    return () => clearTimeout(temporizadorRef.current)
+  }, [])
 
   const manejarCambio = (setter) => (evento) => {
     setter(evento.target.value)
@@ -50,15 +36,24 @@ function Bienvenida() {
     setError('')
     setMensaje('')
 
-    const errorEncontrado =
-      validarNombre(nombre) ||
-      validarNombre(apellido, 'apellido') ||
-      (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
-        ? 'Escribe un correo electrónico válido.'
-        : '')
+    const nombreLimpio = nombre.trim()
+    const apellidoLimpio = apellido.trim()
+    const emailLimpio = email.trim()
+    const soloLetras = /^[\p{L} ]+$/u
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    if (errorEncontrado) {
-      mostrarError(errorEncontrado)
+    if (nombreLimpio.length < 2 || nombreLimpio.length > 50 || !soloLetras.test(nombreLimpio)) {
+      mostrarError('El nombre debe tener entre 2 y 50 caracteres y solo puede contener letras y espacios.')
+      return
+    }
+
+    if (apellidoLimpio.length < 2 || apellidoLimpio.length > 50 || !soloLetras.test(apellidoLimpio)) {
+      mostrarError('El apellido debe tener entre 2 y 50 caracteres y solo puede contener letras y espacios.')
+      return
+    }
+
+    if (emailLimpio.length > 100 || !emailValido.test(emailLimpio)) {
+      mostrarError('Escribe un correo electrónico válido de máximo 100 caracteres.')
       return
     }
 
@@ -68,30 +63,22 @@ function Bienvenida() {
     }
 
     setGuardando(true)
-    const nombreGuardado = nombre.trim()
     try {
-      const respuesta = await fetch(`${API_URL}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: nombreGuardado,
-          lastName: apellido.trim(),
-          email: email.trim(),
-        }),
+      await axios.post(`${API_URL.replace(/\/+$/, '')}/users`, {
+        name: nombreLimpio,
+        lastName: apellidoLimpio,
+        email: emailLimpio,
       })
-      const datos = await respuesta.json()
-
-      if (!respuesta.ok) {
-        throw new Error(datos.message || 'No fue posible guardar tus datos.')
-      }
 
       setNombre('')
       setApellido('')
       setEmail('')
-      setMensaje(generarMensajeBienvenida(nombreGuardado))
+      setMensaje(`Bienvenido, ${nombreLimpio}. Gracias por visitar nuestro sistema.`)
       temporizadorRef.current = setTimeout(() => setMensaje(''), 5000)
     } catch (errorSolicitud) {
-      mostrarError(errorSolicitud.message || 'No fue posible conectar con el servidor.')
+      const mensajeError =
+        errorSolicitud.response?.data?.message || 'No fue posible conectar con el servidor.'
+      mostrarError(mensajeError)
     } finally {
       setGuardando(false)
     }

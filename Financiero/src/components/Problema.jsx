@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 import './Problema.css'
 
 const cargosInventados = [
@@ -28,14 +29,10 @@ function Problema() {
     setError('')
 
     try {
-      const respuesta = await fetch('https://jsonplaceholder.typicode.com/users')
-      if (!respuesta.ok) {
-        throw new Error('No se pudo obtener la lista de empleados.')
-      }
-      const datos = await respuesta.json()
-      setEmpleados(datos)
-    } catch {
-      setError('Ocurrió un error al obtener los nombres de empleados.')
+      const { data } = await axios.get('https://jsonplaceholder.typicode.com/users')
+      setEmpleados(data)
+    } catch (errorSolicitud) {
+      setError(errorSolicitud.response?.data?.message || 'Ocurrió un error al obtener los nombres de empleados.')
       setEmpleados([])
     } finally {
       setCargando(false)
