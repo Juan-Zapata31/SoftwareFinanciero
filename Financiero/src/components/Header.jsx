@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Header.css'
 
-function Header() {
+function Header({ tema, onCambiarTema }) {
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   const enlaces = [
@@ -28,17 +28,6 @@ function Header() {
           <span className="brand-name">SOFTWARE FINANCIERO</span>
         </div>
 
-        <button
-          className="nav-toggle"
-          aria-label="Abrir menú"
-          aria-expanded={menuAbierto}
-          onClick={() => setMenuAbierto(!menuAbierto)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
         <nav className={`main-nav ${menuAbierto ? 'open' : ''}`}>
           {enlaces.map((enlace) => (
             <NavLink
@@ -52,6 +41,32 @@ function Header() {
             </NavLink>
           ))}
         </nav>
+
+        <div className="header-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={onCambiarTema}
+            aria-label={`Cambiar a modo ${tema === 'oscuro' ? 'claro' : 'oscuro'}`}
+            aria-pressed={tema === 'oscuro'}
+          >
+            <span aria-hidden="true">{tema === 'oscuro' ? '☀' : '☾'}</span>
+            <span className="theme-toggle-label">
+              Modo {tema === 'oscuro' ? 'claro' : 'oscuro'}
+            </span>
+          </button>
+
+          <button
+            className="nav-toggle"
+            aria-label="Abrir menú"
+            aria-expanded={menuAbierto}
+            onClick={() => setMenuAbierto(!menuAbierto)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </header>
   )

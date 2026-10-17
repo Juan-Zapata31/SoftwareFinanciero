@@ -23,6 +23,18 @@
   --container: 1160px;
 }
 
+:root[data-theme="claro"] {
+  color-scheme: light;
+}
+
+:root[data-theme="oscuro"] {
+  color-scheme: dark;
+  --bg-light: #17272b;
+  --white: #21363b;
+  --ink: #e2eff0;
+  --ink-soft: #b4cbce;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -51,6 +63,13 @@ h1, h2, h3, h4 {
   letter-spacing: 0.01em;
   margin: 0;
   color: var(--teal-800);
+}
+
+:root[data-theme="oscuro"] h1,
+:root[data-theme="oscuro"] h2,
+:root[data-theme="oscuro"] h3,
+:root[data-theme="oscuro"] h4 {
+  color: var(--cyan-300);
 }
 
 p {

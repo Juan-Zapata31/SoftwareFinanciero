@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import './Bienvenida.css'
 
-function Bienvenida() {
+function Bienvenida({ visible, onCerrar }) {
+  const seccionRef = useRef(null)
+  const nombreRef = useRef(null)
   const [nombre, setNombre] = useState('')
   const [apellido, setApellido] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
   const [guardando, setGuardando] = useState(false)
+  const [cerrando, setCerrando] = useState(false)
+  const [alturaSeccion, setAlturaSeccion] = useState(0)
   const temporizadorRef = useRef(null)
 
   const API_URL = import.meta.env.VITE_API_URL
@@ -16,6 +20,16 @@ function Bienvenida() {
   useEffect(() => {
     return () => clearTimeout(temporizadorRef.current)
   }, [])
+
+  useEffect(() => {
+    if (visible) {
+      clearTimeout(temporizadorRef.current)
+      setCerrando(false)
+      setMensaje('')
+      seccionRef.current?.scrollIntoView({ behavior: 'smooth' })
+      nombreRef.current?.focus({ preventScroll: true })
+    }
+  }, [visible])
 
   const manejarCambio = (setter) => (evento) => {
     setter(evento.target.value)
@@ -73,8 +87,11 @@ function Bienvenida() {
       setNombre('')
       setApellido('')
       setEmail('')
-      setMensaje(`Bienvenido, ${nombreLimpio}. Gracias por visitar nuestro sistema.`)
-      temporizadorRef.current = setTimeout(() => setMensaje(''), 5000)
+      setMensaje(`Usuario guardado correctamente. ¡Bienvenido, ${nombreLimpio}!`)
+      temporizadorRef.current = setTimeout(() => {
+        setAlturaSeccion(seccionRef.current?.getBoundingClientRect().height || 0)
+        setCerrando(true)
+      }, 1000)
     } catch (errorSolicitud) {
       const mensajeError =
         errorSolicitud.response?.data?.message || 'No fue posible conectar con el servidor.'
@@ -84,8 +101,22 @@ function Bienvenida() {
     }
   }
 
+  const manejarFinAnimacion = (evento) => {
+    if (evento.target === evento.currentTarget && evento.animationName === 'bienvenida-cerrar') {
+      onCerrar()
+    }
+  }
+
+  if (!visible) return null
+
   return (
-    <section className="bienvenida" id="bienvenida">
+    <section
+      className={`bienvenida${cerrando ? ' bienvenida-cerrando' : ''}`}
+      id="bienvenida"
+      ref={seccionRef}
+      style={cerrando ? { '--altura-seccion': `${alturaSeccion}px` } : undefined}
+      onAnimationEnd={manejarFinAnimacion}
+    >
       <div className="bienvenida-card">
         <h2>Bienvenido(a)</h2>
         <form className="form-bienvenida" onSubmit={manejarEnvio} noValidate>
@@ -95,10 +126,12 @@ function Bienvenida() {
               type="text"
               id="nombreUsuario"
               name="nombreUsuario"
+              ref={nombreRef}
               placeholder="Escribe tu nombre"
               value={nombre}
               maxLength={50}
               onChange={manejarCambio(setNombre)}
+              disabled={Boolean(mensaje)}
               required
             />
           </div>
@@ -112,6 +145,7 @@ function Bienvenida() {
               value={apellido}
               maxLength={50}
               onChange={manejarCambio(setApellido)}
+              disabled={Boolean(mensaje)}
               required
             />
           </div>
@@ -125,10 +159,15 @@ function Bienvenida() {
               value={email}
               maxLength={100}
               onChange={manejarCambio(setEmail)}
+              disabled={Boolean(mensaje)}
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary" disabled={guardando}>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={guardando || cerrando || Boolean(mensaje)}
+          >
             {guardando ? 'Guardando...' : 'Guardar'}
           </button>
           <p className="error-msg" aria-live="polite">{error}</p>

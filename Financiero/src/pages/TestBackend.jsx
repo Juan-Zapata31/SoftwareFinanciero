@@ -64,8 +64,7 @@ function TestBackend() {
       </button>
       {status?.type === 'success' && (
         <p role="status" aria-live="polite" style={{ marginTop: '1rem' }}>
-          {status.message}. Base de datos: <strong>{status.database}</strong>. Puerto:{' '}
-          <strong>{status.port}</strong>.
+          <strong>{status.message}</strong>.
         </p>
       )}
       {status?.type === 'error' && (

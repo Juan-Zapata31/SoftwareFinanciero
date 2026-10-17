@@ -1,4 +1,8 @@
 .hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(160deg, var(--teal-800) 0%, var(--teal-950) 100%);
   color: var(--white);
   text-align: center;

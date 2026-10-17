@@ -1,5 +1,17 @@
 /* Estilos generales de layout que no pertenecen a un componente específico */
 
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 #root {
   min-height: 100vh;
 }
