@@ -56,13 +56,28 @@ function Bienvenida({ visible, onCerrar }) {
     const soloLetras = /^[\p{L} ]+$/u
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+    if (!nombreLimpio) {
+      mostrarError('El campo nombre no puede ir vacío')
+      return
+    }
+
     if (nombreLimpio.length < 2 || nombreLimpio.length > 50 || !soloLetras.test(nombreLimpio)) {
       mostrarError('El nombre debe tener entre 2 y 50 caracteres y solo puede contener letras y espacios.')
       return
     }
 
+    if (!apellidoLimpio) {
+      mostrarError('El campo apellido no puede ir vacío')
+      return
+    }
+
     if (apellidoLimpio.length < 2 || apellidoLimpio.length > 50 || !soloLetras.test(apellidoLimpio)) {
       mostrarError('El apellido debe tener entre 2 y 50 caracteres y solo puede contener letras y espacios.')
+      return
+    }
+
+    if (!emailLimpio) {
+      mostrarError('El campo correo electrónico no puede ir vacío')
       return
     }
 
