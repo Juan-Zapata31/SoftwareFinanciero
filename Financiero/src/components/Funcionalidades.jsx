@@ -61,6 +61,8 @@ function Funcionalidades() {
   const panelAccionRef = useRef(null)
   const temporizadorCierreRef = useRef(null)
   const [accionActiva, setAccionActiva] = useState('')
+  const [ingresoAbierto, setIngresoAbierto] = useState(false)
+  const [mensajeIngreso, setMensajeIngreso] = useState('')
   const [usuarios, setUsuarios] = useState([])
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState('')
   const [datosUsuario, setDatosUsuario] = useState({ name: '', lastName: '', email: '' })
@@ -239,11 +241,29 @@ function Funcionalidades() {
 
         <div className="func-grid">
           {funcionalidades.map((func) => (
-            <article className="func-card" key={func.titulo}>
-              <div className="func-icon">{func.icono}</div>
-              <h3>{func.titulo}</h3>
-              <p>{func.descripcion}</p>
-            </article>
+            func.titulo === 'Ingreso de dinero' ? (
+              <button
+                className="func-card func-card-action"
+                key={func.titulo}
+                type="button"
+                onClick={() => {
+                  setIngresoAbierto(true)
+                  setMensajeIngreso('')
+                }}
+                aria-expanded={ingresoAbierto}
+                aria-controls={ingresoAbierto ? 'income-registration' : undefined}
+              >
+                <span className="func-icon" aria-hidden="true">{func.icono}</span>
+                <span className="func-card-title">{func.titulo}</span>
+                <span className="func-card-description">{func.descripcion}</span>
+              </button>
+            ) : (
+              <article className="func-card" key={func.titulo}>
+                <div className="func-icon">{func.icono}</div>
+                <h3>{func.titulo}</h3>
+                <p>{func.descripcion}</p>
+              </article>
+            )
           ))}
           {accionesUsuarios.map((func) => (
             <button
@@ -259,6 +279,57 @@ function Funcionalidades() {
             </button>
           ))}
         </div>
+
+        {ingresoAbierto && (
+          <section className="income-registration" id="income-registration" aria-labelledby="income-registration-title">
+            <h3 id="income-registration-title">Nuevo registro:</h3>
+            <form
+              className="income-registration-form"
+              onSubmit={(evento) => {
+                evento.preventDefault()
+                setMensajeIngreso('La vista está lista, pero todavía no hay un servicio para guardar ingresos.')
+              }}
+            >
+              <div className="income-registration-fields">
+                <label htmlFor="income-client">Cliente:</label>
+                <input id="income-client" name="cliente" autoComplete="organization" required />
+
+                <label htmlFor="income-account">Cuenta bancaria:</label>
+                <input id="income-account" name="cuentaBancaria" required />
+
+                <label htmlFor="income-method">Método de pago:</label>
+                <select id="income-method" name="metodoPago" defaultValue="" required>
+                  <option value="" disabled>Selecciona un método</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="efectivo">Efectivo</option>
+                  <option value="tarjeta">Tarjeta</option>
+                </select>
+
+                <label htmlFor="income-date">Fecha de pago:</label>
+                <input id="income-date" name="fechaPago" type="date" required />
+
+                <label htmlFor="income-observation">Observación:</label>
+                <input id="income-observation" name="observacion" />
+              </div>
+
+              {mensajeIngreso && <p className="income-registration-message" role="status">{mensajeIngreso}</p>}
+
+              <div className="income-registration-actions">
+                <button
+                  className="income-cancel-button"
+                  type="button"
+                  onClick={() => {
+                    setIngresoAbierto(false)
+                    setMensajeIngreso('')
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button className="income-save-button" type="submit">Guardar</button>
+              </div>
+            </form>
+          </section>
+        )}
 
         {accionActiva && (
           <section

@@ -6,7 +6,7 @@ import Inicio from './pages/Inicio.jsx'
 import Proyecto from './pages/Proyecto.jsx'
 import FuncionalidadesPage from './pages/FuncionalidadesPage.jsx'
 import Contacto from './pages/Contacto.jsx'
-import TestBackend from './pages/TestBackend.jsx'
+import Backend from './pages/Backend.jsx'
 import './App.css'
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
           <Route path="/proyecto" element={<Proyecto />} />
           <Route path="/funcionalidades" element={<FuncionalidadesPage />} />
           <Route path="/contacto" element={<Contacto />} />
-          <Route path="/api-test" element={<TestBackend />} /> {}
+          <Route path="/backend" element={<Backend />} />
         </Routes>
       </main>
       <Footer />

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
-function TestBackend() {
+function Backend() {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const temporizadorRef = useRef(null);
@@ -76,4 +76,4 @@ function TestBackend() {
   );
 }
 
-export default TestBackend;
+export default Backend;
