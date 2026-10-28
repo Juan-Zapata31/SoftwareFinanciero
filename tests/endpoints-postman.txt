@@ -1,0 +1,146 @@
+ENDPOINTS DEL BACKEND PARA POSTMAN
+=================================
+
+Base URL:
+http://localhost:3000
+
+Para solicitudes con JSON:
+- Selecciona Body > raw > JSON.
+- Agrega el encabezado Content-Type: application/json.
+- Para rutas protegidas, selecciona Authorization > Bearer Token y pega el token obtenido en el login.
+
+Autenticación
+-------------
+
+1. Iniciar sesión
+POST http://localhost:3000/api/auth/login
+No requiere token.
+Body:
+{
+  "username": "admin",
+  "password": "<ADMIN_PASSWORD_CONFIGURADO_EN_EL_SERVIDOR>"
+}
+
+La respuesta exitosa contiene un campo "token". Usa ese valor como Bearer Token para las rutas protegidas.
+
+2. Cerrar sesión
+POST http://localhost:3000/api/auth/logout
+Requiere Bearer Token.
+Sin body.
+Respuesta exitosa: HTTP 204, sin contenido.
+
+Usuarios
+--------
+
+Todas las rutas de usuarios requieren Bearer Token.
+
+3. Consultar usuarios
+GET http://localhost:3000/api/users
+Sin body.
+
+4. Crear usuario
+POST http://localhost:3000/api/users
+Body:
+{
+  "name": "Juan",
+  "lastName": "Zapata",
+  "email": "juan.zapata@example.com"
+}
+
+5. Actualizar usuario
+PUT http://localhost:3000/api/users/ID_USUARIO
+Reemplaza ID_USUARIO por el ID existente.
+Body:
+{
+  "name": "Juan David",
+  "lastName": "Zapata",
+  "email": "juan.david.zapata@example.com"
+}
+
+6. Eliminar usuario
+DELETE http://localhost:3000/api/users/ID_USUARIO
+Reemplaza ID_USUARIO por el ID existente.
+Sin body. Esta operación elimina el usuario; no se puede eliminar si tiene ingresos asociados.
+
+Ingresos
+--------
+
+Todas las rutas de ingresos requieren Bearer Token.
+
+7. Consultar ingresos
+GET http://localhost:3000/api/ingresos
+Sin body.
+
+8. Crear ingreso por transferencia
+POST http://localhost:3000/api/ingresos
+Usa el ID de un usuario existente en usuarioId.
+Body:
+{
+  "usuarioId": "1",
+  "cuentaBancaria": "Cuenta de prueba",
+  "metodoPago": "transferencia",
+  "fechaPago": "2026-10-27",
+  "valor": "150000.50",
+  "observacion": "Ingreso creado desde Postman"
+}
+
+También se aceptan estos métodos de pago; para ambos la cuenta bancaria queda como "No aplica":
+
+Body para efectivo:
+{
+  "usuarioId": "1",
+  "cuentaBancaria": "",
+  "metodoPago": "efectivo",
+  "fechaPago": "2026-10-27",
+  "valor": "150000",
+  "observacion": "Pago en efectivo"
+}
+
+Body para tarjeta:
+{
+  "usuarioId": "1",
+  "cuentaBancaria": "",
+  "metodoPago": "tarjeta",
+  "fechaPago": "2026-10-27",
+  "valor": "150000",
+  "observacion": "Pago con datáfono"
+}
+
+9. Actualizar ingreso
+PUT http://localhost:3000/api/ingresos/ID_INGRESO
+Reemplaza ID_INGRESO por el ID existente. Usa el ID de un usuario existente en usuarioId.
+Body:
+{
+  "usuarioId": "1",
+  "cuentaBancaria": "Cuenta actualizada",
+  "metodoPago": "transferencia",
+  "fechaPago": "2026-10-27",
+  "valor": "200000",
+  "observacion": "Ingreso actualizado desde Postman"
+}
+
+10. Eliminar ingreso
+DELETE http://localhost:3000/api/ingresos/ID_INGRESO
+Reemplaza ID_INGRESO por el ID existente.
+Sin body. Esta operación elimina el ingreso.
+
+Diagnóstico
+-----------
+
+11. Comprobar que el backend responde
+GET http://localhost:3000/api/health
+Sin body ni token.
+
+12. Comprobar conexión con PostgreSQL
+GET http://localhost:3000/api/health/db
+Sin body ni token.
+
+Orden sugerido de prueba
+------------------------
+
+1. Ejecuta el login y copia el token.
+2. Crea un usuario o consulta /api/users para elegir un usuario existente.
+3. Crea un ingreso.
+4. Consulta, actualiza y elimina el ingreso usando su ID.
+5. Cierra sesión al terminar.
+
