@@ -4,7 +4,7 @@
 
 .func-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
@@ -65,6 +65,25 @@
   outline-offset: 3px;
 }
 
+.income-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.15rem;
+  color: var(--cyan-300);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.income-toggle-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.income-toggle-arrow.open {
+  transform: rotate(180deg);
+}
+
 .func-card-title {
   color: var(--white);
   font-family: var(--font-display);
@@ -86,9 +105,31 @@
   color: #bfe2e6;
 }
 
+.user-action-panel-abriendo {
+  overflow: hidden;
+  animation: user-action-panel-open 350ms ease-out both;
+}
+
 .user-action-panel-cerrando {
   overflow: hidden;
   animation: user-action-panel-close 350ms ease-in forwards;
+}
+
+@keyframes user-action-panel-open {
+  from {
+    height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    height: var(--altura-panel);
+    margin-top: 2rem;
+    padding: 1.5rem;
+    opacity: 1;
+  }
 }
 
 @keyframes user-action-panel-close {
@@ -165,6 +206,49 @@
   border-radius: var(--radius-md);
   background: #eef3f4;
   color: #101719;
+}
+
+.income-registration-cerrando {
+  overflow: hidden;
+  animation: income-panel-close 350ms ease-in forwards;
+}
+
+.income-registration-abriendo {
+  overflow: hidden;
+  animation: income-panel-open 350ms ease-out both;
+}
+
+@keyframes income-panel-open {
+  from {
+    height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    height: var(--altura-income-panel);
+    margin-top: 2rem;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    opacity: 1;
+  }
+}
+
+@keyframes income-panel-close {
+  from {
+    height: var(--altura-income-panel);
+    margin-top: 2rem;
+    opacity: 1;
+  }
+
+  to {
+    height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+  }
 }
 
 .income-registration h3 {
@@ -250,6 +334,123 @@
   text-align: center;
 }
 
+.income-registration-error {
+  margin: 1rem 0 0;
+  color: #b42318;
+  font-weight: 600;
+}
+
+.income-list-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #177f8a;
+  border-radius: var(--radius-sm);
+  color: #12626c;
+  background: #e1eff0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.income-list-toggle:hover {
+  background: #d3e8ea;
+}
+
+.income-list-toggle:focus-visible {
+  outline: 2px solid #177f8a;
+  outline-offset: 3px;
+}
+
+.income-list {
+  margin-top: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(18, 98, 108, 0.2);
+}
+
+.income-list h3 {
+  margin-bottom: 1.25rem;
+  color: #177f8a;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.income-table-wrapper {
+  overflow-x: auto;
+}
+
+.income-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #243b3f;
+  text-align: left;
+}
+
+.income-table th,
+.income-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #cbdcde;
+  vertical-align: top;
+}
+
+.income-table th {
+  color: #12626c;
+  white-space: nowrap;
+}
+
+.income-row-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.income-row-actions button {
+  padding: 0.4rem 0.65rem;
+  border: 1px solid #177f8a;
+  border-radius: var(--radius-sm);
+  color: #12626c;
+  background: transparent;
+  font-family: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.income-row-actions button:hover {
+  color: #fff;
+  background: #177f8a;
+}
+
+.income-row-actions .income-delete-button {
+  border-color: #b42318;
+  color: #b42318;
+}
+
+.income-row-actions .income-delete-button:hover {
+  color: #fff;
+  background: #b42318;
+}
+
+.income-row-actions button:focus-visible {
+  outline: 2px solid #177f8a;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-action-panel-abriendo,
+  .user-action-panel-cerrando,
+  .income-registration-abriendo,
+  .income-registration-cerrando {
+    animation-duration: 1ms;
+  }
+}
+
 .user-action-error {
   color: #ffaaaa;
 }
@@ -296,12 +497,6 @@
 
 .delete-confirm-dialog button {
   font-family: var(--font-body);
-}
-
-@media (max-width: 860px) {
-  .func-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 640px) {

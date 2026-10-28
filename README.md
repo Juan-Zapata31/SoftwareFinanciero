@@ -9,16 +9,21 @@ Proyecto PPI con frontend en React + Vite, backend en Node.js + Express y base d
 | React + Vite y Node.js + Express | Implementado |
 | PostgreSQL | Pool de conexiones configurado con `DATABASE_URL` |
 | Consumo de API con Axios | Implementado en las solicitudes del frontend |
-| Middlewares, rutas y controladores | Implementados para la creación de usuarios |
-| Validación de datos y restricciones en PostgreSQL | Implementada para nombre, apellido y correo |
-| CRUD completo (GET, POST, PUT, DELETE) | Pendiente: por ahora solo está implementado POST para usuarios |
+| Middlewares, rutas y controladores | Implementados para usuarios e ingresos |
+| Validación de datos y restricciones en PostgreSQL | Implementada para usuarios e ingresos |
+| CRUD completo (GET, POST, PUT, DELETE) | Implementado para usuarios e ingresos |
 
-El backend se conecta a la base de datos PostgreSQL que ya tienes configurada usando `DATABASE_URL`. La ruta de creación disponible es `POST /api/users`; los endpoints de diagnóstico son `GET /api/health` y `GET /api/health/db`.
+El backend se conecta a la base de datos PostgreSQL que ya tienes configurada usando `DATABASE_URL`. Los ingresos se administran mediante `GET`, `POST`, `PUT` y `DELETE /api/ingresos`; las operaciones requieren haber iniciado sesión. Cada ingreso se relaciona con `users.id` mediante `ingresos.usuario_id`, una clave foránea que impide eliminar usuarios con ingresos relacionados. La migración `server/migrations/20261027_link_ingresos_to_users.sql` aplica este cambio y elimina la columna duplicada `cliente`; el nombre del cliente se consulta desde `users`. Los endpoints de diagnóstico son `GET /api/health` y `GET /api/health/db`.
+
+El botón **Iniciar sesión** valida las credenciales contra `POST /api/auth/login`. Las variables `ADMIN_USERNAME` y `ADMIN_PASSWORD` se leen primero desde `server/.env.local` y luego desde `server/.env`; el archivo `.env.local` está excluido de Git para no publicar la clave. Tras iniciar sesión, el token temporal autoriza las rutas CRUD de `/api/users`; la sesión vence después de ocho horas o al cerrar sesión.
 
 ## Cómo se organiza el código del backend
 
 - `server/src/index.js` inicia Express y conecta las rutas.
-- `server/src/routes/users.js` define la ruta `POST /api/users`.
+- `server/src/routes/users.js` define las rutas CRUD de `/api/users`.
+- `server/src/routes/incomes.js` define las rutas CRUD de `/api/ingresos`.
+- `server/src/controllers/incomesController.js` consulta y modifica los registros de ingresos en PostgreSQL.
+- `server/src/middleware/validateIncome.js` valida datos y valores recibidos antes de guardar ingresos.
 - `server/src/middleware/validateUser.js` revisa los datos antes de guardarlos.
 - `server/src/controllers/usersController.js` ejecuta el `INSERT` en PostgreSQL y responde al frontend.
 - `server/src/db.js` crea la conexión compartida con PostgreSQL.

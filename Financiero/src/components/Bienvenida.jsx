@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import apiClient from '../services/api.js'
 import './Bienvenida.css'
 
 function Bienvenida({ visible, onCerrar }) {
@@ -93,7 +93,7 @@ function Bienvenida({ visible, onCerrar }) {
 
     setGuardando(true)
     try {
-      await axios.post(`${API_URL.replace(/\/+$/, '')}/users`, {
+      await apiClient.post(`${API_URL.replace(/\/+$/, '')}/users`, {
         name: nombreLimpio,
         lastName: apellidoLimpio,
         email: emailLimpio,

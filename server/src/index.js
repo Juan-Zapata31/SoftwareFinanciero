@@ -1,8 +1,10 @@
-import 'dotenv/config';
+import './config.js';
 import express from 'express';
 import cors from 'cors';
 import { pool } from './db.js';
 import usersRouter from './routes/users.js';
+import authRouter from './routes/auth.js';
+import incomesRouter from './routes/incomes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +13,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/ingresos', incomesRouter);
 
 // Ruta de prueba (Healthcheck)
 app.get('/api/health', (req, res) => {

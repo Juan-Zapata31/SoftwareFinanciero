@@ -92,6 +92,12 @@ export async function eliminarUsuario(req, res) {
     });
   } catch (error) {
     console.error('Error al eliminar el usuario en PostgreSQL:', error);
+    if (error.code === '23503') {
+      return res.status(409).json({
+        message: 'No se puede eliminar el usuario porque tiene ingresos asociados.',
+      });
+    }
+
     return res.status(500).json({
       message: 'No fue posible eliminar el usuario de la base de datos.',
     });

@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { crearUsuario, obtenerUsuarios, actualizarUsuario, eliminarUsuario } from '../controllers/usersController.js';
 import { validarUsuario } from '../middleware/validateUser.js';
+import { requireAuth } from '../middleware/requireAuth.js';
 
 const router = Router();
+
+router.use(requireAuth);
 
 router.post('/', validarUsuario, crearUsuario); //endpoint para crear un usuario localhost:3000/api/users
 

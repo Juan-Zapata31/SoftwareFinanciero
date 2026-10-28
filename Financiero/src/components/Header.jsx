@@ -2,14 +2,13 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Header.css'
 
-function Header({ tema, onCambiarTema }) {
+function Header({ usuario, onIniciarSesion, onCerrarSesion }) {
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   const enlaces = [
     { to: '/', texto: 'Inicio' },
     { to: '/proyecto', texto: 'Sobre nosotros' },
     { to: '/funcionalidades', texto: 'Funcionalidades' },
-    { to: '/contacto', texto: 'Contacto' },
     { to: '/api-test', texto: 'Api' }
   ]
 
@@ -45,15 +44,10 @@ function Header({ tema, onCambiarTema }) {
         <div className="header-actions">
           <button
             type="button"
-            className="theme-toggle"
-            onClick={onCambiarTema}
-            aria-label={`Cambiar a modo ${tema === 'oscuro' ? 'claro' : 'oscuro'}`}
-            aria-pressed={tema === 'oscuro'}
+            className="login-toggle"
+            onClick={usuario ? onCerrarSesion : onIniciarSesion}
           >
-            <span aria-hidden="true">{tema === 'oscuro' ? '☀' : '☾'}</span>
-            <span className="theme-toggle-label">
-              Modo {tema === 'oscuro' ? 'claro' : 'oscuro'}
-            </span>
+            {usuario ? `Cerrar sesión (${usuario})` : 'Iniciar sesión'}
           </button>
 
           <button
