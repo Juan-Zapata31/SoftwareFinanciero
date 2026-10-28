@@ -294,6 +294,11 @@
   font: inherit;
 }
 
+.income-registration-fields input:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .income-registration-actions {
   display: flex;
   justify-content: center;

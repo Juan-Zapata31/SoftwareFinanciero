@@ -46,6 +46,7 @@ const accionesUsuarios = [
 
 const API_URL = import.meta.env.VITE_API_URL
 const DEMORA_CIERRE_TARJETA = 10000
+const CUENTA_NO_APLICA = 'No aplica'
 const ingresoVacio = {
   usuarioId: '',
   cuentaBancaria: '',
@@ -292,7 +293,8 @@ function Funcionalidades() {
     setIngresoEditando(String(ingreso.id))
     setDatosIngreso({
       usuarioId: String(ingreso.usuarioId),
-      cuentaBancaria: ingreso.cuentaBancaria,
+      cuentaBancaria:
+        ingreso.metodoPago === 'transferencia' ? ingreso.cuentaBancaria : CUENTA_NO_APLICA,
       metodoPago: ingreso.metodoPago,
       fechaPago: String(ingreso.fechaPago).slice(0, 10),
       valor: String(ingreso.valor),
@@ -584,6 +586,7 @@ function Funcionalidades() {
                   name="cuentaBancaria"
                   maxLength={100}
                   required
+                  disabled={['efectivo', 'tarjeta'].includes(datosIngreso.metodoPago)}
                   value={datosIngreso.cuentaBancaria}
                   onChange={(evento) =>
                     setDatosIngreso({ ...datosIngreso, cuentaBancaria: evento.target.value })
@@ -596,9 +599,19 @@ function Funcionalidades() {
                   name="metodoPago"
                   required
                   value={datosIngreso.metodoPago}
-                  onChange={(evento) =>
-                    setDatosIngreso({ ...datosIngreso, metodoPago: evento.target.value })
-                  }
+                  onChange={(evento) => {
+                    const metodoPago = evento.target.value
+                    setDatosIngreso((datosActuales) => ({
+                      ...datosActuales,
+                      metodoPago,
+                      cuentaBancaria:
+                        metodoPago === 'transferencia'
+                          ? datosActuales.cuentaBancaria === CUENTA_NO_APLICA
+                            ? ''
+                            : datosActuales.cuentaBancaria
+                          : CUENTA_NO_APLICA,
+                    }))
+                  }}
                 >
                   <option value="" disabled>Selecciona un método</option>
                   <option value="transferencia">Transferencia</option>

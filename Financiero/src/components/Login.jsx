@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import './LoginModal.css'
+import './Login.css'
 
-function LoginModal({ abierto, onCerrar, onIniciarSesion }) {
+function Login({ abierto, onCerrar, onIniciarSesion }) {
   const dialogoRef = useRef(null)
   const [usuario, setUsuario] = useState('')
   const [clave, setClave] = useState('')
@@ -96,4 +96,4 @@ function LoginModal({ abierto, onCerrar, onIniciarSesion }) {
   )
 }
 
-export default LoginModal
+export default Login

@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
-import LoginModal from './components/Login.jsx'
+import Login from './components/Login.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Proyecto from './pages/Proyecto.jsx'
 import FuncionalidadesPage from './pages/FuncionalidadesPage.jsx'
@@ -73,7 +73,7 @@ function App() {
           </section>
         )}
       </main>
-      <LoginModal
+      <Login
         abierto={loginAbierto}
         onCerrar={() => setLoginAbierto(false)}
         onIniciarSesion={iniciarSesion}

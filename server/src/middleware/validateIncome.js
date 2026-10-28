@@ -16,7 +16,7 @@ export function validarIngreso(req, res, next) {
     typeof datos.usuarioId === 'string' && /^[1-9]\d*$/.test(datos.usuarioId)
       ? datos.usuarioId
       : '';
-  const cuentaBancaria =
+  let cuentaBancaria =
     typeof datos.cuentaBancaria === 'string' ? datos.cuentaBancaria.trim() : '';
   const metodoPago = typeof datos.metodoPago === 'string' ? datos.metodoPago : '';
   const fechaPago = typeof datos.fechaPago === 'string' ? datos.fechaPago : '';
@@ -32,14 +32,18 @@ export function validarIngreso(req, res, next) {
     return res.status(400).json({ message: 'Selecciona un usuario válido como cliente.' });
   }
 
-  if (!cuentaBancaria || cuentaBancaria.length > 100) {
-    return res.status(400).json({
-      message: 'La cuenta bancaria es obligatoria y no puede superar 100 caracteres.',
-    });
-  }
-
   if (!metodosPago.has(metodoPago)) {
     return res.status(400).json({ message: 'Selecciona un método de pago válido.' });
+  }
+
+  if (metodoPago === 'transferencia') {
+    if (!cuentaBancaria || cuentaBancaria.length > 100) {
+      return res.status(400).json({
+        message: 'La cuenta bancaria es obligatoria y no puede superar 100 caracteres.',
+      });
+    }
+  } else {
+    cuentaBancaria = 'No aplica';
   }
 
   if (!fechaValida) {
