@@ -17,6 +17,10 @@
   position: relative;
 }
 
+.site-header-guest .header-inner {
+  grid-template-columns: 1fr auto;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -63,6 +67,17 @@
 .main-nav a.active {
   color: var(--cyan-300);
   border-bottom-color: var(--cyan-300);
+}
+
+.main-nav a.main-nav-api {
+  opacity: 0.55;
+  font-size: 0.82rem;
+}
+
+.main-nav a.main-nav-api:hover,
+.main-nav a.main-nav-api:focus-visible,
+.main-nav a.main-nav-api.active {
+  opacity: 1;
 }
 
 .header-actions {

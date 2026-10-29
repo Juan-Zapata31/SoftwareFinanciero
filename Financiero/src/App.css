@@ -20,15 +20,20 @@
 }
 
 .login-required h1 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.15rem;
+  font-size: clamp(2rem, 3.8vw, 2.8rem);
 }
 
 .login-required p:not(.eyebrow) {
+  margin-bottom: 1.35rem;
   color: var(--ink-soft);
+  font-size: 1.1rem;
 }
 
 .login-required .btn {
-  margin-top: 0.75rem;
+  margin-top: 0.25rem;
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
 }
 
 #root {

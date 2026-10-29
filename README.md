@@ -13,7 +13,7 @@ Proyecto PPI con frontend en React + Vite, backend en Node.js + Express y base d
 | Validación de datos y restricciones en PostgreSQL | Implementada para usuarios e ingresos |
 | CRUD completo (GET, POST, PUT, DELETE) | Implementado para usuarios e ingresos |
 
-El backend se conecta a la base de datos PostgreSQL que ya tienes configurada usando `DATABASE_URL`. Los ingresos se administran mediante `GET`, `POST`, `PUT` y `DELETE /api/ingresos`; las operaciones requieren haber iniciado sesión. Cada ingreso se relaciona con `users.id` mediante `ingresos.usuario_id`, una clave foránea que impide eliminar usuarios con ingresos relacionados. La migración `server/migrations/20261027_link_ingresos_to_users.sql` aplica este cambio y elimina la columna duplicada `cliente`; el nombre del cliente se consulta desde `users`. Los endpoints de diagnóstico son `GET /api/health` y `GET /api/health/db`.
+El backend se conecta a la base de datos PostgreSQL que ya tienes configurada usando `DATABASE_URL`. Los ingresos se administran mediante `GET`, `POST`, `PUT` y `DELETE /api/ingresos`; las operaciones requieren haber iniciado sesión. `POST /api/ingresos` acepta un ingreso individual o un arreglo de hasta 100 ingresos y guarda el arreglo en una sola transacción (si uno falla, no se guarda ninguno). Cada ingreso se relaciona con `users.id` mediante `ingresos.usuario_id`, una clave foránea que impide eliminar usuarios con ingresos relacionados. Los endpoints de diagnóstico son `GET /api/health` y `GET /api/health/db`.
 
 El botón **Iniciar sesión** valida las credenciales contra `POST /api/auth/login`. Las variables `ADMIN_USERNAME` y `ADMIN_PASSWORD` se leen primero desde `server/.env.local` y luego desde `server/.env`; el archivo `.env.local` está excluido de Git para no publicar la clave. Tras iniciar sesión, el token temporal autoriza las rutas CRUD de `/api/users`; la sesión vence después de ocho horas o al cerrar sesión.
 
@@ -32,7 +32,7 @@ El formulario de bienvenida usa Axios para enviar nombre, apellido y correo. La 
 
 ## Preparación local
 
-1. Usa la base de datos y el esquema que ya tienes creados. No necesitas ejecutar un SQL adicional.
+1. Usa la base de datos PostgreSQL y el esquema que ya tienes creados. Si la tabla `ingresos` todavía tiene la columna `cliente` y no tiene `usuario_id`, ejecuta en pgAdmin el script `server/migrations/20261029_align_ingresos_with_app.sql` conectado a esa base de datos. El script se detiene si ya hay ingresos para evitar perder datos; en ese caso, esos registros deben migrarse manualmente relacionándolos con usuarios.
 2. En un equipo nuevo, crea tus archivos de configuración copiando los ejemplos:
 
    ```powershell

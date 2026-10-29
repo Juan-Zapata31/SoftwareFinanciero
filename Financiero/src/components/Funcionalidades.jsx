@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import apiClient from '../services/api.js'
+import { notifyIncomeDataChanged } from '../services/incomeEvents.js'
 import './Funcionalidades.css'
 
 const funcionalidades = [
@@ -263,6 +264,7 @@ function Funcionalidades() {
         await apiClient.post(url, datosIngreso)
         setMensajeIngreso('Ingreso guardado correctamente.')
       }
+      notifyIncomeDataChanged()
 
       setDatosIngreso(ingresoVacio)
       setIngresoEditando(null)
@@ -320,6 +322,7 @@ function Funcionalidades() {
       await apiClient.delete(
         `${API_URL.replace(/\/+$/, '')}/ingresos/${encodeURIComponent(ingresoAEliminar.id)}`,
       )
+      notifyIncomeDataChanged()
       setIngresos((ingresosActuales) =>
         ingresosActuales.filter((ingreso) => ingreso.id !== ingresoAEliminar.id),
       )
@@ -584,7 +587,13 @@ function Funcionalidades() {
                 <input
                   id="income-account"
                   name="cuentaBancaria"
-                  maxLength={100}
+                  type="text"
+                  inputMode="numeric"
+                  minLength={15}
+                  maxLength={15}
+                  pattern="[0-9]{15}"
+                  title="Ingresa exactamente 15 dígitos numéricos."
+                  placeholder="15 dígitos"
                   required
                   disabled={['efectivo', 'tarjeta'].includes(datosIngreso.metodoPago)}
                   value={datosIngreso.cuentaBancaria}
@@ -743,7 +752,7 @@ function Funcionalidades() {
                         <tr key={ingreso.id}>
                           <td>{fechaComoDiaCalendario(ingreso.fechaPago)}</td>
                           <td>{ingreso.cliente}</td>
-                          <td>{ingreso.cuentaBancaria}</td>
+                          <td>{ingreso.cuentaBancaria ?? CUENTA_NO_APLICA}</td>
                           <td>{ingreso.metodoPago}</td>
                           <td>{formatoMoneda.format(Number(ingreso.valor))}</td>
                           <td>{ingreso.observacion || '—'}</td>

@@ -10,8 +10,7 @@ export function validarIdIngreso(req, res, next) {
   return next();
 }
 
-export function validarIngreso(req, res, next) {
-  const datos = req.body ?? {};
+function validarDatosIngreso(datos) {
   const usuarioId =
     typeof datos.usuarioId === 'string' && /^[1-9]\d*$/.test(datos.usuarioId)
       ? datos.usuarioId
@@ -29,39 +28,72 @@ export function validarIngreso(req, res, next) {
     new Date(`${fechaPago}T00:00:00Z`).toISOString().slice(0, 10) === fechaPago;
 
   if (!usuarioId) {
-    return res.status(400).json({ message: 'Selecciona un usuario válido como cliente.' });
+    return { error: 'Selecciona un usuario válido como cliente.' };
   }
 
   if (!metodosPago.has(metodoPago)) {
-    return res.status(400).json({ message: 'Selecciona un método de pago válido.' });
+    return { error: 'Selecciona un método de pago válido.' };
   }
 
   if (metodoPago === 'transferencia') {
-    if (!cuentaBancaria || cuentaBancaria.length > 100) {
-      return res.status(400).json({
-        message: 'La cuenta bancaria es obligatoria y no puede superar 100 caracteres.',
-      });
+    if (!/^[0-9]{15}$/.test(cuentaBancaria)) {
+      return { error: 'La cuenta bancaria debe contener exactamente 15 dígitos numéricos.' };
     }
   } else {
-    cuentaBancaria = 'No aplica';
+    cuentaBancaria = null;
   }
 
   if (!fechaValida) {
-    return res.status(400).json({ message: 'Ingresa una fecha de pago válida.' });
+    return { error: 'Ingresa una fecha de pago válida.' };
   }
 
   if (!valorMonetario.test(valor) || Number(valor) <= 0) {
-    return res.status(400).json({
-      message: 'El valor debe ser mayor que cero y tener máximo dos decimales.',
-    });
+    return { error: 'El valor debe ser mayor que cero y tener máximo dos decimales.' };
   }
 
   if (observacion.length > 10000) {
-    return res.status(400).json({
-      message: 'La observación no puede superar 10000 caracteres.',
-    });
+    return { error: 'La observación no puede superar 10000 caracteres.' };
   }
 
-  req.body = { usuarioId, cuentaBancaria, metodoPago, fechaPago, valor, observacion };
+  return {
+    datos: { usuarioId, cuentaBancaria, metodoPago, fechaPago, valor, observacion },
+  };
+}
+
+export function validarIngreso(req, res, next) {
+  if (Array.isArray(req.body)) {
+    if (req.body.length === 0 || req.body.length > 100) {
+      return res.status(400).json({
+        message: 'Envía entre 1 y 100 ingresos por solicitud.',
+      });
+    }
+
+    const ingresos = [];
+    for (const [indice, datos] of req.body.entries()) {
+      if (!datos || typeof datos !== 'object' || Array.isArray(datos)) {
+        return res.status(400).json({
+          message: `El ingreso en la posición ${indice + 1} debe ser un objeto JSON.`,
+        });
+      }
+
+      const resultado = validarDatosIngreso(datos);
+      if (resultado.error) {
+        return res.status(400).json({
+          message: `Ingreso ${indice + 1}: ${resultado.error}`,
+        });
+      }
+      ingresos.push(resultado.datos);
+    }
+
+    req.body = ingresos;
+    return next();
+  }
+
+  const resultado = validarDatosIngreso(req.body ?? {});
+  if (resultado.error) {
+    return res.status(400).json({ message: resultado.error });
+  }
+
+  req.body = resultado.datos;
   return next();
 }

@@ -31,6 +31,63 @@ export async function obtenerIngresos(req, res) {
 }
 
 export async function crearIngreso(req, res) {
+  if (Array.isArray(req.body)) {
+    const client = await pool.connect();
+    let transaccionIniciada = false;
+
+    try {
+      await client.query('BEGIN');
+      transaccionIniciada = true;
+      const ingresos = [];
+
+      for (const datos of req.body) {
+        const { rows } = await client.query(
+          `WITH inserted AS (
+             INSERT INTO ingresos
+               (usuario_id, cuenta_bancaria, metodo_pago, fecha_pago, valor, observacion)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             RETURNING *
+           )
+           SELECT ${columnasIngreso}
+           FROM inserted i
+           JOIN users u ON u.id = i.usuario_id`,
+          [
+            datos.usuarioId,
+            datos.cuentaBancaria,
+            datos.metodoPago,
+            datos.fechaPago,
+            datos.valor,
+            datos.observacion || null,
+          ],
+        );
+        ingresos.push(rows[0]);
+      }
+
+      await client.query('COMMIT');
+      return res.status(201).json({
+        message: `${ingresos.length} ingresos guardados correctamente.`,
+        ingresos,
+      });
+    } catch (error) {
+      console.error('Error al guardar el lote de ingresos en PostgreSQL:', error);
+      if (transaccionIniciada) {
+        try {
+          await client.query('ROLLBACK');
+        } catch (rollbackError) {
+          console.error('Error al revertir el lote de ingresos en PostgreSQL:', rollbackError);
+        }
+      }
+      if (error.code === '23503') {
+        return res.status(400).json({ message: 'Uno de los usuarios seleccionados ya no existe.' });
+      }
+      return res.status(500).json({
+        message: 'No fue posible guardar los ingresos en la base de datos.',
+      });
+    } finally {
+      client.release();
+    }
+  }
+
   const { usuarioId, cuentaBancaria, metodoPago, fechaPago, valor, observacion } = req.body;
 
   try {

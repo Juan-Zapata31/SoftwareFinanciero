@@ -6,14 +6,15 @@ function Header({ usuario, onIniciarSesion, onCerrarSesion }) {
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   const enlaces = [
-    { to: '/', texto: 'Inicio' },
-    { to: '/proyecto', texto: 'Sobre nosotros' },
+    { to: '/inicio', texto: 'Inicio' },
+    { to: '/', texto: 'Dashboard' },
     { to: '/funcionalidades', texto: 'Funcionalidades' },
-    { to: '/api-test', texto: 'Api' }
+    { to: '/proyecto', texto: 'Sobre nosotros' },
+    { to: '/api-test', texto: 'API' },
   ]
 
   return (
-    <header className="site-header">
+    <header className={`site-header${usuario ? '' : ' site-header-guest'}`}>
       <div className="header-inner">
         <div className="brand">
           <span className="brand-mark">
@@ -27,19 +28,28 @@ function Header({ usuario, onIniciarSesion, onCerrarSesion }) {
           <span className="brand-name">SOFTWARE FINANCIERO</span>
         </div>
 
-        <nav className={`main-nav ${menuAbierto ? 'open' : ''}`}>
-          {enlaces.map((enlace) => (
-            <NavLink
-              key={enlace.to}
-              to={enlace.to}
-              end={enlace.to === '/'}
-              className={({ isActive }) => (isActive ? 'active' : '')}
-              onClick={() => setMenuAbierto(false)}
-            >
-              {enlace.texto}
-            </NavLink>
-          ))}
-        </nav>
+        {usuario && (
+          <nav className={`main-nav ${menuAbierto ? 'open' : ''}`}>
+            {enlaces.map((enlace) => (
+              <NavLink
+                key={enlace.to}
+                to={enlace.to}
+                end={enlace.to === '/'}
+                className={({ isActive }) =>
+                  [
+                    isActive ? 'active' : '',
+                    enlace.to === '/api-test' ? 'main-nav-api' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
+                }
+                onClick={() => setMenuAbierto(false)}
+              >
+                {enlace.texto}
+              </NavLink>
+            ))}
+          </nav>
+        )}
 
         <div className="header-actions">
           <button
@@ -50,16 +60,19 @@ function Header({ usuario, onIniciarSesion, onCerrarSesion }) {
             {usuario ? `Cerrar sesión (${usuario})` : 'Iniciar sesión'}
           </button>
 
-          <button
-            className="nav-toggle"
-            aria-label="Abrir menú"
-            aria-expanded={menuAbierto}
-            onClick={() => setMenuAbierto(!menuAbierto)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          {usuario && (
+            <button
+              type="button"
+              className="nav-toggle"
+              aria-label="Abrir menú"
+              aria-expanded={menuAbierto}
+              onClick={() => setMenuAbierto(!menuAbierto)}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          )}
         </div>
       </div>
     </header>

@@ -5,6 +5,7 @@ import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import Login from './components/Login.jsx'
 import Inicio from './pages/Inicio.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 import Proyecto from './pages/Proyecto.jsx'
 import FuncionalidadesPage from './pages/FuncionalidadesPage.jsx'
 import Backend from './pages/Backend.jsx'
@@ -52,7 +53,8 @@ function App() {
       <main className="app-main">
         {usuario ? (
           <Routes>
-            <Route path="/" element={<Inicio />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/inicio" element={<Inicio />} />
             <Route path="/proyecto" element={<Proyecto />} />
             <Route path="/funcionalidades" element={<FuncionalidadesPage />} />
             <Route path="/api-test" element={<Backend />} />
@@ -60,7 +62,6 @@ function App() {
           </Routes>
         ) : (
           <section className="login-required">
-            <p className="eyebrow eyebrow-dark">Acceso protegido</p>
             <h1>Inicia sesión para continuar</h1>
             <p>Usa tu cuenta de administrador para acceder al sistema financiero.</p>
             <button
