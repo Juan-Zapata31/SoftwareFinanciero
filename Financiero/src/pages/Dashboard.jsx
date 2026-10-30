@@ -259,8 +259,6 @@ function Dashboard() {
   const [ingresos, setIngresos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
-  const [descargando, setDescargando] = useState(false)
-  const [reporteDescargado, setReporteDescargado] = useState(false)
   const [errorDescarga, setErrorDescarga] = useState('')
 
   useEffect(() => {
@@ -342,105 +340,56 @@ function Dashboard() {
     }
   }
 
-  async function descargarReporte() {
+  function descargarReporte() {
     if (!resumen) return
-    setDescargando(true)
-    setReporteDescargado(false)
     setErrorDescarga('')
 
     try {
-      if (!window.showSaveFilePicker) {
-        throw new Error('Tu navegador no permite confirmar cuándo termina el guardado del archivo.')
-      }
-
-      const nombreArchivo = `ReporteIngresos_${fechaBogotaIso(new Date())}.xlsx`
-      const archivo = await window.showSaveFilePicker({
-        suggestedName: nombreArchivo,
-        types: [
-          {
-            description: 'Libro de Excel',
-            accept: {
-              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-            },
-          },
-        ],
-      })
-      const escritor = await archivo.createWritable()
-      try {
-        const { default: ExcelJS } = await import('exceljs')
-        const workbook = new ExcelJS.Workbook()
-        workbook.creator = 'Software Financiero'
-        workbook.created = new Date()
-        const worksheet = workbook.addWorksheet('Reporte de ingresos')
-
-        worksheet.columns = [
-          { header: 'ID ingreso', key: 'id', width: 14 },
-          { header: 'ID usuario', key: 'usuarioId', width: 14 },
-          { header: 'Cliente', key: 'cliente', width: 25 },
-          { header: 'Correo del cliente', key: 'clienteEmail', width: 32 },
-          { header: 'Cuenta bancaria', key: 'cuentaBancaria', width: 20 },
-          { header: 'Método de pago', key: 'metodoPago', width: 20 },
-          { header: 'Fecha de pago', key: 'fechaPago', width: 16 },
-          { header: 'Valor (COP)', key: 'valor', width: 18, style: { numFmt: '"$"#,##0.00' } },
-          { header: 'Observación', key: 'observacion', width: 40 },
-          { header: 'Fecha de registro', key: 'creadoEn', width: 26 },
-        ]
-
-        worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } }
-        worksheet.getRow(1).fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FF17707C' },
-        }
-        worksheet.views = [{ state: 'frozen', ySplit: 1 }]
-        worksheet.autoFilter = {
-          from: 'A1',
-          to: 'J1',
-        }
-
-        ingresos
-          .filter((ingreso) => {
-            const fecha = String(ingreso.fechaPago).slice(0, 10)
-            return fecha >= desde && fecha <= hasta
-          })
-          .forEach((ingreso) => {
-            worksheet.addRow({
-              id: Number(ingreso.id),
-              usuarioId: Number(ingreso.usuarioId),
-              cliente: ingreso.cliente,
-              clienteEmail: ingreso.clienteEmail,
-              cuentaBancaria:
-                ingreso.cuentaBancaria == null ? CUENTA_NO_APLICA : String(ingreso.cuentaBancaria),
-              metodoPago: metodosPago[ingreso.metodoPago] || ingreso.metodoPago,
-              fechaPago: String(ingreso.fechaPago).slice(0, 10),
-              valor: Number(ingreso.valor),
-              observacion: ingreso.observacion || '',
-              creadoEn: ingreso.creadoEn ? new Date(ingreso.creadoEn).toLocaleString('es-CO') : '',
-            })
-          })
-
-        const contenido = await workbook.xlsx.writeBuffer()
-        await escritor.write(contenido)
-        await escritor.close()
-      } catch (errorEscritura) {
-        try {
-          await escritor.abort()
-        } catch (errorCancelacion) {
-          console.error('No fue posible cancelar la escritura incompleta del reporte:', errorCancelacion)
-        }
-        throw errorEscritura
-      }
-      setReporteDescargado(true)
+      const columnas = [
+        'ID ingreso',
+        'ID usuario',
+        'Cliente',
+        'Correo del cliente',
+        'Cuenta bancaria',
+        'Método de pago',
+        'Fecha de pago',
+        'Valor (COP)',
+        'Observación',
+        'Fecha de registro',
+      ]
+      const filas = ingresos
+        .filter((ingreso) => {
+          const fecha = String(ingreso.fechaPago).slice(0, 10)
+          return fecha >= desde && fecha <= hasta
+        })
+        .map((ingreso) => [
+          ingreso.id,
+          ingreso.usuarioId,
+          ingreso.cliente,
+          ingreso.clienteEmail,
+          ingreso.cuentaBancaria == null ? CUENTA_NO_APLICA : String(ingreso.cuentaBancaria),
+          metodosPago[ingreso.metodoPago] || ingreso.metodoPago,
+          String(ingreso.fechaPago).slice(0, 10),
+          ingreso.valor,
+          ingreso.observacion || '',
+          ingreso.creadoEn ? new Date(ingreso.creadoEn).toLocaleString('es-CO') : '',
+        ])
+      const escaparCampo = (valor) => `"${String(valor ?? '').replace(/"/g, '""')}"`
+      const contenido = `\uFEFF${[columnas, ...filas]
+        .map((fila) => fila.map(escaparCampo).join(','))
+        .join('\r\n')}`
+      const archivo = new Blob([contenido], { type: 'text/csv;charset=utf-8' })
+      const url = URL.createObjectURL(archivo)
+      const enlace = document.createElement('a')
+      enlace.href = url
+      enlace.download = `ReporteIngresos_${fechaBogotaIso(new Date())}.csv`
+      document.body.appendChild(enlace)
+      enlace.click()
+      enlace.remove()
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
     } catch (error) {
-      if (error.name === 'AbortError') return
-      console.error('No fue posible generar el reporte de ingresos en Excel:', error)
-      setErrorDescarga(
-        error.message === 'Tu navegador no permite confirmar cuándo termina el guardado del archivo.'
-          ? error.message
-          : 'No fue posible guardar el reporte de Excel. Intenta nuevamente.',
-      )
-    } finally {
-      setDescargando(false)
+      console.error('No fue posible generar el reporte de ingresos en CSV:', error)
+      setErrorDescarga('No fue posible descargar el reporte CSV. Intenta nuevamente.')
     }
   }
 
@@ -457,14 +406,11 @@ function Dashboard() {
             type="button"
             className="dashboard-download"
             onClick={descargarReporte}
-            disabled={!rangoValido || cargando || Boolean(error) || descargando}
+            disabled={!rangoValido || cargando || Boolean(error)}
           >
-            <span>{descargando ? 'Preparando…' : 'Descargar'}</span>
+            <span>Descargar</span>
             <span className="download-icon" aria-hidden="true">↓</span>
           </button>
-          {reporteDescargado && (
-            <p className="download-feedback" role="status">Informe descargado.</p>
-          )}
           {errorDescarga && <p className="download-feedback download-feedback-error" role="alert">{errorDescarga}</p>}
         </div>
       </div>
