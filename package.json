@@ -1,5 +1,11 @@
 {
   "dependencies": {
-    "react-router-dom": "^6.30.6"
+    "@tailwindcss/vite": "^4.3.5",
+    "react-router-dom": "^6.30.6",
+    "tailwindcss": "^4.3.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
+    "postcss": "^8.5.32"
   }
 }
