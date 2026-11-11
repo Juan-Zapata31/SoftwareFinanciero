@@ -12,8 +12,17 @@
   margin-bottom: 1.75rem;
 }
 
+.dashboard-heading h1 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+}
+
 .dashboard-heading .eyebrow {
   margin-bottom: 0.25rem;
+}
+
+.dashboard-intro {
+  margin: 0.45rem 0 0;
+  color: var(--ink-soft);
 }
 
 .dashboard-download {
@@ -47,6 +56,11 @@
   color: #b42318;
 }
 
+.dashboard-download:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 .download-icon {
   display: grid;
   width: 44px;
@@ -74,6 +88,25 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.filter-period {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-period:hover,
+.filter-period.selected {
+  border-color: var(--teal-800);
+  background: var(--teal-800);
+  color: var(--white);
 }
 
 .filter-dates {
@@ -359,6 +392,11 @@
 
   .dashboard-filters {
     padding-inline: 0;
+  }
+
+  .filter-period {
+    padding-inline: 0.7rem;
+    font-size: 0.84rem;
   }
 
   .dashboard-total {

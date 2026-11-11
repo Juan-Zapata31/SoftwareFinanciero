@@ -398,13 +398,13 @@ function Dashboard() {
       <div className="dashboard-heading">
         <div>
           <p className="eyebrow eyebrow-dark">Vista general</p>
-          <h1 className="!mb-0 text-[1.8rem] leading-tight sm:text-[2.1rem] md:text-[2.5rem]">Panel de ingresos</h1>
-          <p className="!mb-0 !mt-2 text-[var(--ink-soft)]">Consulta la totalidad de ingresos del periodo que elijas.</p>
+          <h1>Panel de ingresos</h1>
+          <p className="dashboard-intro">Consulta la totalidad de ingresos del periodo que elijas.</p>
         </div>
         <div className="dashboard-download-action">
           <button
             type="button"
-            className="dashboard-download rounded-md transition-colors duration-200 hover:text-[var(--teal-800)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--cyan-500)] disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none"
+            className="dashboard-download"
             onClick={descargarReporte}
             disabled={!rangoValido || cargando || Boolean(error)}
           >
@@ -424,7 +424,7 @@ function Dashboard() {
             <button
               type="button"
               key={valor}
-              className={`filter-period rounded-full border px-[0.7rem] py-[0.55rem] text-[0.84rem] font-bold [font-family:var(--font-body)] transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan-500)] min-[481px]:px-[0.9rem] min-[481px]:text-[0.92rem] ${periodo === valor ? 'selected border-[var(--teal-800)] bg-[var(--teal-800)] text-white' : 'border-transparent bg-transparent text-[var(--ink-soft)] hover:border-[var(--teal-800)] hover:bg-[var(--teal-800)] hover:text-white'}`}
+              className={`filter-period${periodo === valor ? ' selected' : ''}`}
               aria-pressed={periodo === valor}
               onClick={() => cambiarPeriodo(valor)}
             >

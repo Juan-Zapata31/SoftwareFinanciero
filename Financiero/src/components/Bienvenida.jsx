@@ -126,19 +126,18 @@ function Bienvenida({ visible, onCerrar }) {
 
   return (
     <section
-      className={`mx-auto flex justify-center px-6 py-14 sm:px-8${cerrando ? ' bienvenida-cerrando' : ''}`}
+      className={`bienvenida${cerrando ? ' bienvenida-cerrando' : ''}`}
       id="bienvenida"
       ref={seccionRef}
       style={cerrando ? { '--altura-seccion': `${alturaSeccion}px` } : undefined}
       onAnimationEnd={manejarFinAnimacion}
     >
-      <div className="w-full max-w-[560px] rounded-[10px] bg-white px-6 py-8 text-center shadow-[0_10px_30px_rgba(18,61,67,0.12)] sm:px-8 sm:py-9">
-        <h2 className="!mb-5 text-2xl">Bienvenido(a)</h2>
-        <form className="grid gap-4" onSubmit={manejarEnvio} noValidate>
-          <div className="grid gap-2 text-left">
-            <label className="text-left text-sm font-semibold text-[var(--ink-soft)]" htmlFor="nombreUsuario">Nombre:</label>
+      <div className="bienvenida-card">
+        <h2>Bienvenido(a)</h2>
+        <form className="form-bienvenida" onSubmit={manejarEnvio} noValidate>
+          <div className="form-bienvenida-field">
+            <label htmlFor="nombreUsuario">Nombre:</label>
             <input
-              className="w-full rounded-md border border-[#cfe0e2] bg-[var(--bg-light)] px-4 py-3 text-base text-[var(--ink)] [font-family:var(--font-body)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cyan-500)] disabled:cursor-not-allowed disabled:opacity-60"
               type="text"
               id="nombreUsuario"
               name="nombreUsuario"
@@ -151,10 +150,9 @@ function Bienvenida({ visible, onCerrar }) {
               required
             />
           </div>
-          <div className="grid gap-2 text-left">
-            <label className="text-left text-sm font-semibold text-[var(--ink-soft)]" htmlFor="apellidoUsuario">Apellido:</label>
+          <div className="form-bienvenida-field">
+            <label htmlFor="apellidoUsuario">Apellido:</label>
             <input
-              className="w-full rounded-md border border-[#cfe0e2] bg-[var(--bg-light)] px-4 py-3 text-base text-[var(--ink)] [font-family:var(--font-body)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cyan-500)] disabled:cursor-not-allowed disabled:opacity-60"
               type="text"
               id="apellidoUsuario"
               name="apellidoUsuario"
@@ -166,10 +164,9 @@ function Bienvenida({ visible, onCerrar }) {
               required
             />
           </div>
-          <div className="grid gap-2 text-left">
-            <label className="text-left text-sm font-semibold text-[var(--ink-soft)]" htmlFor="emailUsuario">Correo electrónico:</label>
+          <div className="form-bienvenida-field">
+            <label htmlFor="emailUsuario">Correo electrónico:</label>
             <input
-              className="w-full rounded-md border border-[#cfe0e2] bg-[var(--bg-light)] px-4 py-3 text-base text-[var(--ink)] [font-family:var(--font-body)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cyan-500)] disabled:cursor-not-allowed disabled:opacity-60"
               type="email"
               id="emailUsuario"
               name="emailUsuario"
@@ -183,7 +180,7 @@ function Bienvenida({ visible, onCerrar }) {
           </div>
           <button
             type="submit"
-            className="mt-1 inline-flex w-full cursor-pointer justify-center rounded-md border-0 bg-[var(--teal-700)] px-7 py-3.5 text-[0.95rem] uppercase tracking-[0.03em] text-white [font-family:var(--font-display)] transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--teal-950)] hover:shadow-[0_8px_18px_rgba(18,61,67,0.25)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan-500)] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none"
+            className="btn btn-primary"
             disabled={guardando || cerrando || Boolean(mensaje)}
           >
             {guardando ? 'Guardando...' : 'Guardar'}
