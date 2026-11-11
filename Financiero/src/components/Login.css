@@ -1,11 +1,21 @@
 .login-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform: translate(-50%, -50%);
   width: min(440px, calc(100vw - 2rem));
   padding: 2rem;
   border: 0;
   border-radius: var(--radius-md);
   color: var(--ink);
-  background: var(--white);
+  background: /*var(--white)*/ #17707c;
   box-shadow: 0 20px 60px rgba(13, 61, 67, 0.28);
+}
+
+.login-dialog-background{
+  background-image: linear-gradient(135deg, var(--teal-950) 0%, var(--teal-800) 55%, var(--teal-950) 100%);
+  background-size: 200% 100%;
 }
 
 .login-dialog::backdrop {
@@ -20,7 +30,24 @@
   margin-bottom: 1.5rem;
 }
 
+.login-dialog-header p {
+  color: var(--white);
+}
+
+.login-dialog .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(127, 224, 232, 0.55);
+  border-radius: 999px;
+  background: rgba(18, 98, 108, 0.45);
+  color: var(--white);
+  font-size: 0.78rem;
+}
+
 .login-dialog-header h2 {
+  color: var(--white);
   font-size: 1.7rem;
 }
 
@@ -44,7 +71,7 @@
 }
 
 .login-form label {
-  color: var(--ink-soft);
+  color: var(--white);
   font-weight: 600;
 }
 
@@ -67,6 +94,15 @@
 .login-form .btn {
   justify-self: start;
   margin-top: 0.65rem;
+}
+
+.login-form .btn.btn-primary {
+  color: var(--teal-950);
+  background: var(--white);
+}
+
+.login-form .btn.btn-primary:hover {
+  background: var(--white);
 }
 
 .login-form .btn:disabled {
