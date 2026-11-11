@@ -1,4 +1,6 @@
-/* Estilos generales de layout que no pertenecen a un componente específico 
+@import "tailwindcss";
+
+/* Estilos generales de layout que no pertenecen a un componente específico */
 
 .app-shell {
   min-height: 100vh;
@@ -39,6 +41,3 @@
 #root {
   min-height: 100vh;
 }
-*/
-
-@import "tailwindcss";

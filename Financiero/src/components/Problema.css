@@ -1,56 +1,6 @@
-.problema {
-  background: var(--bg-light);
-}
- 
-.empleados-bloque {
-  margin-top: 1rem;
-}
- 
 .empleados-error {
   color: #c23b3b;
   font-size: 0.85rem;
   margin: 0.8rem 0 0;
 }
  
-.empleados-lista {
-  list-style: none;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
- 
-.empleados-lista li {
-  background: var(--white);
-  border-left: 4px solid var(--cyan-500);
-  border-radius: var(--radius-sm);
-  padding: 0.9rem 1.1rem;
-  box-shadow: 0 4px 14px rgba(18, 61, 67, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
- 
-.empleado-nombre {
-  font-weight: 600;
-  color: var(--ink);
-  font-size: 0.95rem;
-}
- 
-.empleado-cargo {
-  color: var(--teal-700);
-  font-size: 0.85rem;
-}
- 
-@media (max-width: 860px) {
-  .empleados-lista {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
- 
-@media (max-width: 500px) {
-  .empleados-lista {
-    grid-template-columns: 1fr;
-  }
-}

@@ -493,7 +493,7 @@ function Funcionalidades() {
   )
 
   return (
-    <section className="funcionalidades" id="funcionalidades">
+    <section className="funcionalidades bg-[var(--teal-800)]" id="funcionalidades">
       <div className="section-inner">
         <p className="eyebrow">Funcionalidades</p>
         <h2 className="section-title section-title-light">
@@ -504,7 +504,7 @@ function Funcionalidades() {
           {funcionalidades.map((func) => (
             func.titulo === 'Ingreso de dinero' ? (
               <button
-                className="func-card func-card-action"
+                className="func-card func-card-action transition duration-200 hover:-translate-y-1 hover:bg-[var(--teal-700)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--cyan-300)] motion-reduce:transition-none"
                 key={func.titulo}
                 type="button"
                 onClick={desplegarFormularioIngreso}
@@ -522,7 +522,7 @@ function Funcionalidades() {
                 </span>
               </button>
             ) : (
-              <article className="func-card" key={func.titulo}>
+              <article className="func-card transition duration-200 hover:-translate-y-1 hover:bg-[var(--teal-700)] motion-reduce:transition-none" key={func.titulo}>
                 <div className="func-icon">{func.icono}</div>
                 <h3>{func.titulo}</h3>
                 <p>{func.descripcion}</p>
@@ -531,7 +531,7 @@ function Funcionalidades() {
           ))}
           {accionesUsuarios.map((func) => (
             <button
-              className="func-card func-card-action"
+              className="func-card func-card-action transition duration-200 hover:-translate-y-1 hover:bg-[var(--teal-700)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--cyan-300)] motion-reduce:transition-none"
               key={func.accion}
               type="button"
               onClick={() => abrirAccion(func.accion)}

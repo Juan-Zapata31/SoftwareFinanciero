@@ -9,7 +9,7 @@ import Dashboard from './pages/Dashboard.jsx'
 import Proyecto from './pages/Proyecto.jsx'
 import FuncionalidadesPage from './pages/FuncionalidadesPage.jsx'
 import Backend from './pages/Backend.jsx'
-import { PanelCursos } from './components/PanelRecursos.jsx'
+import PanelRecursosPage from './pages/PanelRecursosPage.jsx'
 import './App.css'
 
 function App() {
@@ -54,7 +54,8 @@ function App() {
       <main className="app-main">
         {usuario ? (
           <Routes>
-            <Route path="/recursos" element={<PanelCursos />} />
+            <Route path="/panel-recursos" element={<PanelRecursosPage />} />
+            <Route path="/recursos" element={<PanelRecursosPage />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/inicio" element={<Inicio />} />
             <Route path="/proyecto" element={<Proyecto />} />
